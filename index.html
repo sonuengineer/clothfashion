@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MAISON - Luxury women's clothing. Timeless elegance for the modern woman.">
+  <title>MAISON | Women's Luxury Fashion</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS v4 Browser CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <!-- Tailwind v4 Theme -->
+  <style type="text/tailwindcss">
+    @theme {
+      --color-luxury-black: #0A0A0A;
+      --color-luxury-charcoal: #111111;
+      --color-luxury-dark: #1A1A1A;
+      --color-luxury-card: #161616;
+      --color-luxury-surface: #0F0F0F;
+
+      --color-gold: #C9A96E;
+      --color-gold-light: #D4AF37;
+      --color-gold-dark: #A68B4B;
+      --color-gold-muted: #8B7355;
+
+      --color-text-primary: #F5F5F5;
+      --color-text-secondary: #A0A0A0;
+      --color-text-muted: #6B6B6B;
+
+      --font-display: "Playfair Display", Georgia, serif;
+      --font-heading: "Space Grotesk", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+
+      --animate-orb-1: orb-drift-1 20s ease-in-out infinite;
+      --animate-orb-2: orb-drift-2 25s ease-in-out infinite;
+      --animate-orb-3: orb-drift-3 18s ease-in-out infinite;
+      --animate-pulse-gold: pulse-gold 4s ease-in-out infinite;
+      --animate-shimmer: shimmer 3s ease-in-out infinite;
+    }
+  </style>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-luxury-black text-text-primary font-body antialiased overflow-x-hidden">
+
+  <!-- ========== SCROLL PROGRESS ========== -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ========== LOADING SCREEN ========== -->
+  <div id="loading-screen" aria-hidden="true">
+    <div class="loader-logo">MAISON</div>
+    <div class="loader-line"></div>
+    <div class="loader-tagline">Luxury Redefined</div>
+  </div>
+
+  <!-- ========== CUSTOM CURSOR ========== -->
+  <div class="custom-cursor" id="custom-cursor" aria-hidden="true">
+    <span class="cursor-label" id="cursor-label"></span>
+  </div>
+
+  <!-- ========== NAVBAR ========== -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <nav class="glass-panel mx-4 mt-4 rounded-2xl px-6 py-4 lg:mx-8 lg:px-8" role="navigation" aria-label="Main navigation">
+      <div class="mx-auto flex max-w-7xl items-center justify-between">
+        <a href="#" class="font-heading text-2xl font-bold tracking-wider text-gold cursor-pointer" aria-label="MAISON Home">MAISON</a>
+        <div class="hidden items-center gap-8 md:flex">
+          <a href="#featured" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">New In</a>
+          <a href="#collections" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Collections</a>
+          <a href="#heritage" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Our Story</a>
+          <a href="#membership" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">VIP Club</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="#membership" class="hidden rounded-full border border-gold/30 bg-gold/10 px-6 py-2 font-body text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/20 hover:border-gold/50 sm:inline-block cursor-pointer">Join VIP</a>
+          <button id="mobile-menu-btn" class="text-text-secondary transition-colors duration-300 hover:text-gold md:hidden cursor-pointer" aria-label="Toggle mobile menu" aria-expanded="false">
+            <i data-lucide="menu" class="h-6 w-6"></i>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden flex-col gap-4 pt-6 pb-2 md:hidden">
+        <a href="#featured" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">New In</a>
+        <a href="#collections" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Collections</a>
+        <a href="#heritage" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Our Story</a>
+        <a href="#membership" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">VIP Club</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero" class="relative min-h-screen overflow-hidden">
+      <!-- Three.js Canvas -->
+      <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-[1] pointer-events-none" aria-hidden="true"></canvas>
+
+      <!-- Video Background with Image Fallback -->
+      <div class="hero-video-container" data-parallax-hero style="will-change:transform">
+        <video id="hero-video" autoplay muted loop playsinline
+               poster="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&h=1080&fit=crop&q=80"
+               aria-hidden="true">
+          <source src="https://cdn.coverr.co/videos/coverr-woman-walking-in-a-fashion-store-1584/1080p.mp4" type="video/mp4">
+        </video>
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&h=1080&fit=crop&q=80"
+             alt="Elegant woman in luxury designer outfit"
+             class="hero-video-fallback hero-image h-full w-full object-cover object-top">
+        <div class="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/70 to-luxury-black/40"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-luxury-black/70 to-transparent"></div>
+      </div>
+
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[2]">
+        <div class="gradient-orb absolute -top-32 right-1/4 h-96 w-96 bg-gradient-to-br from-gold/30 to-gold-dark/10 animate-orb-1" data-parallax-orb></div>
+        <div class="gradient-orb absolute bottom-1/4 -left-20 h-[400px] w-[400px] bg-gradient-to-tr from-purple-900/20 to-transparent animate-orb-2" data-parallax-orb></div>
+        <!-- Gold Particles -->
+        <div class="particle" style="left:10%;bottom:0;--p-size:2px;--p-duration:14s;--p-delay:0s;--p-drift:30px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:20%;bottom:0;--p-size:3px;--p-duration:11s;--p-delay:2s;--p-drift:-20px;--p-opacity:0.5"></div>
+        <div class="particle" style="left:35%;bottom:0;--p-size:2px;--p-duration:16s;--p-delay:4s;--p-drift:15px;--p-opacity:0.35"></div>
+        <div class="particle" style="left:50%;bottom:0;--p-size:4px;--p-duration:13s;--p-delay:1s;--p-drift:-25px;--p-opacity:0.4"></div>
+        <div class="particle" style="left:65%;bottom:0;--p-size:2px;--p-duration:18s;--p-delay:3s;--p-drift:10px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:75%;bottom:0;--p-size:3px;--p-duration:10s;--p-delay:5s;--p-drift:-35px;--p-opacity:0.45"></div>
+        <div class="particle" style="left:85%;bottom:0;--p-size:2px;--p-duration:15s;--p-delay:7s;--p-drift:20px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:45%;bottom:0;--p-size:3px;--p-duration:12s;--p-delay:6s;--p-drift:-15px;--p-opacity:0.5"></div>
+        <div class="particle" style="left:5%;bottom:0;--p-size:2px;--p-duration:17s;--p-delay:8s;--p-drift:25px;--p-opacity:0.35"></div>
+        <div class="particle" style="left:92%;bottom:0;--p-size:3px;--p-duration:14s;--p-delay:3.5s;--p-drift:-10px;--p-opacity:0.4"></div>
+      </div>
+
+      <div class="relative z-[10] flex min-h-screen flex-col justify-center px-4">
+        <div class="mx-auto w-full max-w-7xl">
+          <div class="flex items-center justify-between">
+            <div class="max-w-2xl">
+              <p class="scroll-hidden font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-6">Spring / Summer 2026</p>
+              <h1 id="hero-heading" class="font-display text-5xl font-bold leading-[1.1] text-text-primary sm:text-6xl lg:text-7xl xl:text-8xl" data-char-animate>
+                Dress the<br>
+                <span class="text-shimmer">Woman</span><br>
+                You Are
+              </h1>
+              <p class="scroll-hidden stagger-2 mt-6 max-w-md font-body text-lg text-text-secondary leading-relaxed">
+                Luxury women's fashion designed with intention. From runway to your wardrobe — elegance redefined.
+              </p>
+              <div class="scroll-hidden stagger-3 mt-10 flex flex-wrap gap-4">
+                <a href="#featured" class="magnetic-btn inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 font-body text-sm font-semibold tracking-wide text-luxury-black transition-all duration-300 hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 cursor-pointer">
+                  Shop New In
+                  <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </a>
+                <a href="#heritage" class="glass-panel inline-flex items-center gap-2 rounded-full px-8 py-4 font-body text-sm font-medium text-text-primary transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                  Our Story
+                </a>
+              </div>
+            </div>
+
+            <!-- Floating 3D Product Showcase -->
+            <div class="hidden lg:block relative" aria-hidden="true">
+              <div class="hero-float-product relative w-64 xl:w-80">
+                <div class="rounded-2xl overflow-hidden border border-gold/20 shadow-2xl shadow-gold/10">
+                  <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&h=700&fit=crop&q=80"
+                       alt="" class="w-full aspect-[3/4] object-cover">
+                </div>
+                <div class="glass-panel absolute -bottom-4 -left-6 rounded-xl px-4 py-2.5 text-center">
+                  <p class="font-heading text-sm font-bold text-gold">$2,890</p>
+                  <p class="font-body text-[10px] text-text-muted tracking-wider uppercase">Noir Silk Gown</p>
+                </div>
+                <div class="absolute -top-3 -right-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/90 border-2 border-luxury-black shadow-lg">
+                  <i data-lucide="star" class="h-4 w-4 text-luxury-black fill-luxury-black"></i>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" aria-hidden="true">
+        <span class="font-body text-xs tracking-widest uppercase text-text-muted">Scroll</span>
+        <div class="h-12 w-px bg-gradient-to-b from-gold/50 to-transparent" style="animation: scroll-bounce 2s ease-in-out infinite;"></div>
+      </div>
+    </section>
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="relative border-y border-white/5 bg-luxury-surface py-12 px-4">
+      <div class="mx-auto max-w-7xl">
+        <div id="stats-bar" class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          <div class="scroll-hidden text-center">
+            <p class="font-heading text-4xl font-bold text-text-primary lg:text-5xl"><span class="counter-value" data-count="200">0</span><span class="text-gold counter-suffix" data-suffix="+"></span></p>
+            <p class="mt-2 font-body text-sm text-text-secondary">Exclusive Designs</p>
+          </div>
+          <div class="scroll-hidden stagger-1 text-center">
+            <p class="font-heading text-4xl font-bold text-text-primary lg:text-5xl"><span class="counter-value" data-count="32">0</span></p>
+            <p class="mt-2 font-body text-sm text-text-secondary">Global Boutiques</p>
+          </div>
+          <div class="scroll-hidden stagger-2 text-center">
+            <p class="font-heading text-4xl font-bold text-text-primary lg:text-5xl"><span class="counter-value" data-count="50">0</span><span class="text-gold counter-suffix" data-suffix="K+"></span></p>
+            <p class="mt-2 font-body text-sm text-text-secondary">Women Styled</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MARQUEE BANNER 1 ========== -->
+    <div class="marquee-container" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-content">
+          <span>Free Worldwide Shipping</span><div class="marquee-dot"></div>
+          <span>Handcrafted Luxury</span><div class="marquee-dot"></div>
+          <span>Exclusive Designs</span><div class="marquee-dot"></div>
+          <span>Made in Italy</span><div class="marquee-dot"></div>
+          <span>Sustainable Materials</span><div class="marquee-dot"></div>
+          <span>Complimentary Alterations</span><div class="marquee-dot"></div>
+        </div>
+        <div class="marquee-content">
+          <span>Free Worldwide Shipping</span><div class="marquee-dot"></div>
+          <span>Handcrafted Luxury</span><div class="marquee-dot"></div>
+          <span>Exclusive Designs</span><div class="marquee-dot"></div>
+          <span>Made in Italy</span><div class="marquee-dot"></div>
+          <span>Sustainable Materials</span><div class="marquee-dot"></div>
+          <span>Complimentary Alterations</span><div class="marquee-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== FEATURED PRODUCTS (NEW IN) ========== -->
+    <section id="featured" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+        <div class="gradient-orb absolute left-1/4 top-0 h-64 w-64 bg-gradient-to-br from-purple-800/15 to-transparent"></div>
+        <div class="gradient-orb absolute right-1/4 bottom-0 h-80 w-80 bg-gradient-to-tl from-gold/8 to-transparent"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+          <div>
+            <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Just Dropped</p>
+            <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl" data-char-animate>New In</h2>
+          </div>
+          <a href="#" class="inline-flex items-center gap-2 font-body text-sm font-medium text-gold transition-colors duration-300 hover:text-gold-light cursor-pointer">
+            View All <i data-lucide="arrow-right" class="h-4 w-4"></i>
+          </a>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+          <!-- Product 1: Dress -->
+          <article class="scroll-hidden stagger-1 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <div class="product-img-wrapper">
+                      <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop&q=80"
+                           alt="Woman in elegant black silk evening dress"
+                           class="product-img-primary img-reveal" loading="lazy">
+                      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=800&fit=crop&q=80"
+                           alt="Black silk evening dress alternate angle"
+                           class="product-img-secondary" loading="lazy">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[3]"></div>
+                    <span class="absolute top-3 left-3 rounded-full bg-gold/90 px-3 py-1 font-body text-[11px] font-semibold tracking-wider uppercase text-luxury-black z-10">New</span>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Dresses</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Noir Silk Gown</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$2,890</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Noir Silk Gown</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$2,890</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Italian silk, hand-finished</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Noir Black</p>
+                      <p class="flex items-center gap-2"><i data-lucide="shirt" class="h-4 w-4 text-gold"></i> Sizes: XS — XL</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 2: Blazer -->
+          <article class="scroll-hidden stagger-2 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <div class="product-img-wrapper">
+                      <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop&q=80"
+                           alt="Tailored women's beige blazer on display"
+                           class="product-img-primary img-reveal" loading="lazy">
+                      <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop&q=80"
+                           alt="Beige blazer alternate angle"
+                           class="product-img-secondary" loading="lazy">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[3]"></div>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Outerwear</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Tailored Wool Blazer</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$1,450</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Tailored Wool Blazer</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$1,450</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Scottish wool blend</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Camel / Ivory</p>
+                      <p class="flex items-center gap-2"><i data-lucide="shirt" class="h-4 w-4 text-gold"></i> Sizes: XS — XL</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 3: Handbag -->
+          <article class="scroll-hidden stagger-3 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <div class="product-img-wrapper">
+                      <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=800&fit=crop&q=80"
+                           alt="Luxury quilted leather handbag in champagne gold"
+                           class="product-img-primary img-reveal" loading="lazy">
+                      <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=800&fit=crop&q=80"
+                           alt="Quilted handbag alternate angle"
+                           class="product-img-secondary" loading="lazy">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[3]"></div>
+                    <span class="absolute top-3 left-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 font-body text-[11px] font-semibold tracking-wider uppercase text-text-primary z-10">Exclusive</span>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Handbags</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Quilted Shoulder Bag</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$3,200</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Quilted Shoulder Bag</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$3,200</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Full-grain lambskin</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Champagne Gold</p>
+                      <p class="flex items-center gap-2"><i data-lucide="box" class="h-4 w-4 text-gold"></i> 28 x 18 x 9 cm</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 4: Heels -->
+          <article class="scroll-hidden stagger-4 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <div class="product-img-wrapper">
+                      <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=800&fit=crop&q=80"
+                           alt="Elegant strappy gold high heel sandals"
+                           class="product-img-primary img-reveal" loading="lazy">
+                      <img src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&h=800&fit=crop&q=80"
+                           alt="Gold heels alternate angle"
+                           class="product-img-secondary" loading="lazy">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[3]"></div>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Shoes</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Aurelia Strappy Heels</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$980</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Aurelia Strappy Heels</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$980</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Metallic leather upper</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Gold / Rose Gold</p>
+                      <p class="flex items-center gap-2"><i data-lucide="shirt" class="h-4 w-4 text-gold"></i> Sizes: 35 — 42</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== HERITAGE / OUR STORY ========== -->
+    <section id="heritage" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute right-0 top-1/4 h-80 w-80 gradient-orb bg-gradient-to-bl from-gold/12 to-transparent"></div>
+
+      <div class="mx-auto max-w-7xl">
+        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+
+          <div class="scroll-slide-left relative">
+            <div class="glass-card rounded-2xl overflow-hidden img-reveal-zoom">
+              <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&h=1000&fit=crop&q=80"
+                   alt="Fashion designer draping fabric on a dress form in her atelier"
+                   class="w-full object-cover aspect-[4/5] img-reveal" loading="lazy">
+            </div>
+            <div class="glass-panel absolute -bottom-5 -right-4 sm:-right-6 rounded-xl px-5 py-3.5 text-center">
+              <p class="font-heading text-2xl font-bold text-gold">15<span class="text-gold-light">+</span></p>
+              <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-secondary">Years of Design</p>
+            </div>
+          </div>
+
+          <div class="scroll-slide-right">
+            <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-4">Our Heritage</p>
+            <h2 class="font-heading text-3xl font-bold leading-snug text-text-primary sm:text-4xl lg:text-5xl" data-char-animate>
+              Designed for Women, by Women
+            </h2>
+            <div class="mt-8 space-y-5 font-body text-base leading-relaxed text-text-secondary lg:text-lg">
+              <p>MAISON was founded with one belief: every woman deserves to feel powerful in what she wears. Our designs celebrate femininity, confidence, and individuality.</p>
+              <p>From our Milan atelier, each piece is crafted with the finest European fabrics — silk from Lake Como, wool from Scotland, lace from Calais — to create garments that feel as extraordinary as they look.</p>
+            </div>
+            <div class="glass-card mt-8 rounded-xl p-6">
+              <p class="font-display text-lg italic leading-relaxed text-text-primary">
+                "Fashion fades, but the way a woman feels in our clothes — that is forever."
+              </p>
+              <p class="mt-3 font-body text-sm font-medium tracking-wider uppercase text-gold-muted">— Creative Director</p>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a href="#" class="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-6 py-3 font-body text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/20 hover:border-gold/50 cursor-pointer">
+                Read Our Story <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+              <a href="#" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 font-body text-sm font-medium text-text-secondary transition-all duration-300 hover:text-text-primary hover:border-white/20 cursor-pointer">
+                Book a Styling Session <i data-lucide="calendar" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== COLLECTIONS (Full-Screen Pinned) ========== -->
+    <section id="collections" class="relative" style="height: 300vh;">
+      <div class="sticky top-0 h-screen overflow-hidden">
+        <!-- Slide 1: Evening Wear -->
+        <div class="collection-slide" id="col-slide-1">
+          <div class="collection-slide-inner">
+            <img src="https://images.unsplash.com/photo-1518622358385-8ea7d0794bf6?w=1920&h=1080&fit=crop&q=80"
+                 alt="Women's evening wear collection" class="collection-slide-img" loading="lazy">
+            <div class="collection-slide-overlay"></div>
+            <div class="collection-slide-content">
+              <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">42 Styles</p>
+              <h3 class="font-display text-5xl lg:text-7xl font-bold text-text-primary leading-tight">Evening Wear</h3>
+              <p class="mt-4 font-body text-base text-text-secondary max-w-sm">Exquisite gowns and dresses for unforgettable nights. Handcrafted from the finest European silks.</p>
+              <a href="#" class="inline-flex items-center gap-2 mt-6 font-body text-sm font-medium text-gold transition-colors hover:text-gold-light cursor-pointer">
+                Explore Collection <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 2: Ready-to-Wear -->
+        <div class="collection-slide" id="col-slide-2">
+          <div class="collection-slide-inner">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&h=1080&fit=crop&q=80"
+                 alt="Women shopping luxury ready-to-wear" class="collection-slide-img" loading="lazy">
+            <div class="collection-slide-overlay"></div>
+            <div class="collection-slide-content">
+              <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">68 Styles</p>
+              <h3 class="font-display text-5xl lg:text-7xl font-bold text-text-primary leading-tight">Ready-to-Wear</h3>
+              <p class="mt-4 font-body text-base text-text-secondary max-w-sm">From boardroom to brunch. Effortless sophistication for the modern woman's every moment.</p>
+              <a href="#" class="inline-flex items-center gap-2 mt-6 font-body text-sm font-medium text-gold transition-colors hover:text-gold-light cursor-pointer">
+                Explore Collection <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 3: Accessories -->
+        <div class="collection-slide" id="col-slide-3">
+          <div class="collection-slide-inner">
+            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=1920&h=1080&fit=crop&q=80"
+                 alt="Luxury women's accessories" class="collection-slide-img" loading="lazy">
+            <div class="collection-slide-overlay"></div>
+            <div class="collection-slide-content">
+              <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">35 Styles</p>
+              <h3 class="font-display text-5xl lg:text-7xl font-bold text-text-primary leading-tight">Accessories</h3>
+              <p class="mt-4 font-body text-base text-text-secondary max-w-sm">The finishing touch. Statement bags, jewelry, and shoes to complete every look.</p>
+              <a href="#" class="inline-flex items-center gap-2 mt-6 font-body text-sm font-medium text-gold transition-colors hover:text-gold-light cursor-pointer">
+                Explore Collection <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Dots -->
+        <div class="collection-progress">
+          <span class="collection-counter">01 / 03</span>
+          <div class="collection-progress-dot active" data-slide="1"></div>
+          <div class="collection-progress-dot" data-slide="2"></div>
+          <div class="collection-progress-dot" data-slide="3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== LOOKBOOK (Horizontal Scroll) ========== -->
+    <section id="lookbook" class="relative py-20 px-4 lg:py-28 overflow-hidden">
+      <div class="mx-auto max-w-7xl mb-12">
+        <div class="scroll-hidden flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Editorial</p>
+            <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl" data-char-animate>The Lookbook</h2>
+          </div>
+          <p class="hidden lg:block font-body text-xs tracking-[0.2em] uppercase text-text-muted">
+            <span class="inline-flex items-center gap-2">
+              <i data-lucide="move-horizontal" class="h-4 w-4"></i>
+              Scroll to explore
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="lookbook-track" id="lookbook-track">
+        <div class="lookbook-item">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&h=800&fit=crop&q=80"
+               alt="Model in flowing cream dress on editorial photoshoot" loading="lazy">
+          <div class="lookbook-caption">
+            <h3 class="font-display text-2xl font-semibold text-text-primary">Effortless Grace</h3>
+            <p class="mt-1 font-body text-sm text-text-secondary">Spring / Summer 2026</p>
+          </div>
+        </div>
+        <div class="lookbook-item">
+          <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=1200&h=800&fit=crop&q=80"
+               alt="Woman walking in designer outfit on city street" loading="lazy">
+          <div class="lookbook-caption">
+            <h3 class="font-display text-2xl font-semibold text-text-primary">Urban Elegance</h3>
+            <p class="mt-1 font-body text-sm text-text-secondary">City Collection</p>
+          </div>
+        </div>
+        <div class="lookbook-item">
+          <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1200&h=800&fit=crop&q=80"
+               alt="Close-up of luxury fabric detail and craftsmanship" loading="lazy">
+          <div class="lookbook-caption">
+            <h3 class="font-display text-2xl font-semibold text-text-primary">Detail & Craft</h3>
+            <p class="mt-1 font-body text-sm text-text-secondary">Artisan Series</p>
+          </div>
+        </div>
+        <div class="lookbook-item">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&h=800&fit=crop&q=80"
+               alt="Model on runway in luxury evening gown" loading="lazy">
+          <div class="lookbook-caption">
+            <h3 class="font-display text-2xl font-semibold text-text-primary">Runway Moments</h3>
+            <p class="mt-1 font-body text-sm text-text-secondary">Couture Preview</p>
+          </div>
+        </div>
+        <div class="lookbook-item">
+          <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1200&h=800&fit=crop&q=80"
+               alt="Fashion designer at work in atelier" loading="lazy">
+          <div class="lookbook-caption">
+            <h3 class="font-display text-2xl font-semibold text-text-primary">Behind the Seams</h3>
+            <p class="mt-1 font-body text-sm text-text-secondary">Atelier Diary</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== BRAND VALUES ========== -->
+    <section class="relative py-20 px-4 lg:py-28">
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden mx-auto max-w-2xl text-center mb-14">
+          <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Our Promise</p>
+          <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl">What We Stand For</h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="scroll-blur stagger-1 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="sparkles" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Feminine Power</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Designs that celebrate confidence, grace, and the strength in every woman.</p>
+          </div>
+          <div class="scroll-blur stagger-2 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="scissors" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Artisan Craft</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Handcrafted by master seamstresses with decades of couture expertise.</p>
+          </div>
+          <div class="scroll-blur stagger-3 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="leaf" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Sustainable Luxury</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Ethically sourced fabrics and responsible production for a better future.</p>
+          </div>
+          <div class="scroll-blur stagger-4 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="heart" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Timeless Style</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Pieces designed to transcend seasons and remain elegant for years to come.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+        <div class="gradient-orb absolute right-0 top-1/3 h-[400px] w-[400px] bg-gradient-to-l from-gold/10 to-transparent"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden mx-auto max-w-2xl text-center mb-14">
+          <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Reviews</p>
+          <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl">What Our Women Say</h2>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          <div class="scroll-hidden stagger-1 glass-card rounded-2xl p-7 cursor-pointer">
+            <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+            </div>
+            <blockquote class="font-body text-sm leading-relaxed text-text-secondary">
+              "The Noir Silk Gown made me feel like the most elegant woman in the room. The cut is perfection and the fabric feels incredible on the skin."
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+                <span class="font-heading text-xs font-semibold text-gold">SL</span>
+              </div>
+              <div>
+                <p class="font-body text-sm font-medium text-text-primary">Sofia L.</p>
+                <p class="font-body text-xs text-text-muted">VIP Member</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="scroll-hidden stagger-2 glass-card rounded-2xl p-7 cursor-pointer">
+            <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+            </div>
+            <blockquote class="font-body text-sm leading-relaxed text-text-secondary">
+              "MAISON understands a woman's body. Every blazer, every dress — it all fits like it was made just for me. I've never felt this confident."
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+                <span class="font-heading text-xs font-semibold text-gold">AR</span>
+              </div>
+              <div>
+                <p class="font-body text-sm font-medium text-text-primary">Amara R.</p>
+                <p class="font-body text-xs text-text-muted">Founding Member</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="scroll-hidden stagger-3 glass-card rounded-2xl p-7 cursor-pointer">
+            <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+            </div>
+            <blockquote class="font-body text-sm leading-relaxed text-text-secondary">
+              "The Quilted Shoulder Bag is a dream. I get compliments every single time I carry it. Worth every penny for the craftsmanship."
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+                <span class="font-heading text-xs font-semibold text-gold">EC</span>
+              </div>
+              <div>
+                <p class="font-body text-sm font-medium text-text-primary">Elena C.</p>
+                <p class="font-body text-xs text-text-muted">Style Editor</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MEMBERSHIP CTA ========== -->
+    <section id="membership" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+        <div class="gradient-orb absolute -left-32 top-1/4 h-[500px] w-[500px] bg-gradient-to-r from-gold/15 to-transparent animate-orb-1" data-parallax-orb></div>
+        <div class="gradient-orb absolute -right-32 bottom-1/4 h-[400px] w-[400px] bg-gradient-to-l from-purple-800/15 to-transparent animate-orb-2" data-parallax-orb></div>
+        <div class="particle" style="left:15%;bottom:0;--p-size:3px;--p-duration:12s;--p-delay:1s;--p-drift:-20px;--p-opacity:0.4"></div>
+        <div class="particle" style="left:30%;bottom:0;--p-size:2px;--p-duration:15s;--p-delay:3s;--p-drift:25px;--p-opacity:0.35"></div>
+        <div class="particle" style="left:55%;bottom:0;--p-size:3px;--p-duration:10s;--p-delay:0s;--p-drift:-15px;--p-opacity:0.5"></div>
+        <div class="particle" style="left:70%;bottom:0;--p-size:2px;--p-duration:14s;--p-delay:5s;--p-drift:30px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:85%;bottom:0;--p-size:3px;--p-duration:11s;--p-delay:2s;--p-drift:-10px;--p-opacity:0.45"></div>
+        <div class="particle" style="left:40%;bottom:0;--p-size:2px;--p-duration:16s;--p-delay:4s;--p-drift:15px;--p-opacity:0.35"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-4xl">
+        <div class="scroll-hidden glass-panel rounded-3xl overflow-hidden">
+          <div class="relative bg-gradient-to-br from-gold/5 via-transparent to-purple-900/10 p-10 sm:p-14 text-center">
+            <div class="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/10 px-4 py-1.5 mb-8">
+              <i data-lucide="crown" class="h-4 w-4 text-gold"></i>
+              <span class="font-body text-xs font-semibold tracking-widest uppercase text-gold">Exclusive Access</span>
+            </div>
+            <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl lg:text-5xl">
+              Join the <span class="text-shimmer">VIP Club</span>
+            </h2>
+            <p class="mx-auto mt-4 max-w-lg font-body text-text-secondary leading-relaxed">
+              Get first access to new drops, private styling sessions, and members-only events designed for the modern woman.
+            </p>
+            <ul class="mx-auto mt-8 max-w-md space-y-3 text-left">
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">48-hour early access to every new collection</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">Free personal styling consultations</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">Invitations to private runway shows</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">Complimentary alterations on all orders</span>
+              </li>
+            </ul>
+            <form id="membership-form" class="mx-auto mt-10 flex max-w-md flex-col gap-3 sm:flex-row">
+              <label for="membership-email" class="sr-only">Email address</label>
+              <input id="membership-email" type="email" required placeholder="Enter your email"
+                class="flex-1 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-body text-sm text-text-primary placeholder:text-text-muted backdrop-blur-sm transition-all duration-300 focus:border-gold/30 focus:bg-white/8 focus:outline-none focus:ring-2 focus:ring-gold/20">
+              <button type="submit"
+                class="magnetic-btn rounded-full bg-gold px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-luxury-black transition-all duration-300 hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 cursor-pointer">
+                Join Now
+              </button>
+            </form>
+            <p class="mt-6 font-body text-xs font-medium tracking-wider uppercase text-text-muted">
+              Free to join &middot; Cancel anytime
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== MARQUEE BANNER 2 ========== -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-track" style="animation-direction: reverse;">
+      <div class="marquee-content">
+        <span>Spring / Summer 2026</span><div class="marquee-dot"></div>
+        <span>Join the VIP Club</span><div class="marquee-dot"></div>
+        <span>15+ Years of Design</span><div class="marquee-dot"></div>
+        <span>Milan Atelier</span><div class="marquee-dot"></div>
+        <span>Personal Styling</span><div class="marquee-dot"></div>
+        <span>Timeless Elegance</span><div class="marquee-dot"></div>
+      </div>
+      <div class="marquee-content">
+        <span>Spring / Summer 2026</span><div class="marquee-dot"></div>
+        <span>Join the VIP Club</span><div class="marquee-dot"></div>
+        <span>15+ Years of Design</span><div class="marquee-dot"></div>
+        <span>Milan Atelier</span><div class="marquee-dot"></div>
+        <span>Personal Styling</span><div class="marquee-dot"></div>
+        <span>Timeless Elegance</span><div class="marquee-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="relative border-t border-white/5 py-14 px-4">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+
+        <div class="lg:col-span-2">
+          <a href="#" class="font-heading text-2xl font-bold tracking-wider text-gold cursor-pointer">MAISON</a>
+          <p class="mt-4 font-body text-sm leading-relaxed text-text-muted max-w-xs">
+            Luxury women's fashion designed with intention. Timeless elegance for the modern woman.
+          </p>
+          <div class="mt-6 flex gap-3">
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-muted transition-all duration-300 hover:text-gold hover:border-gold/30 cursor-pointer" aria-label="Instagram">
+              <i data-lucide="instagram" class="h-4 w-4"></i>
+            </a>
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-muted transition-all duration-300 hover:text-gold hover:border-gold/30 cursor-pointer" aria-label="Pinterest">
+              <i data-lucide="bookmark" class="h-4 w-4"></i>
+            </a>
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-muted transition-all duration-300 hover:text-gold hover:border-gold/30 cursor-pointer" aria-label="TikTok">
+              <i data-lucide="play" class="h-4 w-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-body text-sm font-semibold tracking-wider uppercase text-text-secondary mb-4">Shop</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">New In</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Dresses</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Outerwear</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Handbags</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Shoes</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-body text-sm font-semibold tracking-wider uppercase text-text-secondary mb-4">Services</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Personal Styling</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Alterations</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Gift Cards</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Size Guide</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-body text-sm font-semibold tracking-wider uppercase text-text-secondary mb-4">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Our Story</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Sustainability</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Privacy Policy</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Contact Us</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-12 border-t border-white/5 pt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+        <p class="font-body text-xs text-text-muted">&copy; 2026 MAISON. All rights reserved.</p>
+        <p class="font-body text-xs text-text-muted">Designed for women, by women</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Main JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>

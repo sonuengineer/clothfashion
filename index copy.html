@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MAISON - Luxury women's clothing. Timeless elegance for the modern woman.">
+  <title>MAISON | Women's Luxury Fashion</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS v4 Browser CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <!-- Tailwind v4 Theme -->
+  <style type="text/tailwindcss">
+    @theme {
+      --color-luxury-black: #0A0A0A;
+      --color-luxury-charcoal: #111111;
+      --color-luxury-dark: #1A1A1A;
+      --color-luxury-card: #161616;
+      --color-luxury-surface: #0F0F0F;
+
+      --color-gold: #C9A96E;
+      --color-gold-light: #D4AF37;
+      --color-gold-dark: #A68B4B;
+      --color-gold-muted: #8B7355;
+
+      --color-text-primary: #F5F5F5;
+      --color-text-secondary: #A0A0A0;
+      --color-text-muted: #6B6B6B;
+
+      --font-display: "Playfair Display", Georgia, serif;
+      --font-heading: "Space Grotesk", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+
+      --animate-orb-1: orb-drift-1 20s ease-in-out infinite;
+      --animate-orb-2: orb-drift-2 25s ease-in-out infinite;
+      --animate-orb-3: orb-drift-3 18s ease-in-out infinite;
+      --animate-pulse-gold: pulse-gold 4s ease-in-out infinite;
+      --animate-shimmer: shimmer 3s ease-in-out infinite;
+    }
+  </style>
+
+  <!-- Custom CSS -->
+  <style>
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0A0A0A; }
+    ::-webkit-scrollbar-thumb { background: #C9A96E; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+    ::selection { background: rgba(201, 169, 110, 0.3); color: #F5F5F5; }
+
+    @keyframes orb-drift-1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(100px, -50px) scale(1.1); }
+      50% { transform: translate(50px, 100px) scale(0.9); }
+      75% { transform: translate(-80px, 50px) scale(1.05); }
+    }
+    @keyframes orb-drift-2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(-120px, 80px) scale(1.15); }
+      50% { transform: translate(80px, -60px) scale(0.95); }
+      75% { transform: translate(60px, 120px) scale(1.08); }
+    }
+    @keyframes orb-drift-3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-60px, -100px) scale(1.12); }
+      66% { transform: translate(100px, 60px) scale(0.92); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes pulse-gold {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.4); }
+      50% { box-shadow: 0 0 20px 5px rgba(201, 169, 110, 0.15); }
+    }
+    @keyframes scroll-bounce {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(10px); opacity: 0.5; }
+    }
+    @keyframes hero-zoom {
+      0% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(201, 169, 110, 0.3);
+      box-shadow: 0 8px 32px rgba(201, 169, 110, 0.1);
+      transform: translateY(-4px);
+    }
+    .text-shimmer {
+      background: linear-gradient(120deg, #C9A96E 0%, #D4AF37 25%, #F5E6C8 50%, #D4AF37 75%, #C9A96E 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    .gradient-orb {
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .scroll-hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .scroll-visible { opacity: 1; transform: translateY(0); }
+    .stagger-1 { transition-delay: 100ms; }
+    .stagger-2 { transition-delay: 200ms; }
+    .stagger-3 { transition-delay: 300ms; }
+    .stagger-4 { transition-delay: 400ms; }
+    .hero-image { animation: hero-zoom 1.5s ease-out forwards; }
+    .product-img { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+    .group:hover .product-img { transform: scale(1.05); }
+    .collection-overlay {
+      background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 40%, transparent 100%);
+    }
+    :focus-visible { outline: 2px solid #C9A96E; outline-offset: 2px; }
+
+    /* ===== Scroll Animation Variants ===== */
+    .scroll-slide-left {
+      opacity: 0; transform: translateX(-60px);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .scroll-slide-right {
+      opacity: 0; transform: translateX(60px);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .scroll-scale {
+      opacity: 0; transform: scale(0.85);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .scroll-blur {
+      opacity: 0; filter: blur(10px);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), filter 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .scroll-visible.scroll-slide-left,
+    .scroll-visible.scroll-slide-right,
+    .scroll-visible.scroll-scale { opacity: 1; transform: none; }
+    .scroll-visible.scroll-blur { opacity: 1; filter: none; }
+
+    /* ===== Clip-Path Image Reveal ===== */
+    .img-reveal { clip-path: inset(100% 0 0 0); transition: clip-path 1s cubic-bezier(0.4,0,0.2,1); }
+    .scroll-visible .img-reveal,
+    .scroll-visible.img-reveal { clip-path: inset(0 0 0 0); }
+
+    /* ===== 3D Perspective / Tilt ===== */
+    .perspective-container { perspective: 1200px; }
+    .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+    }
+    .tilt-card:hover {
+      box-shadow: 0 25px 60px rgba(201,169,110,0.2), 0 10px 20px rgba(0,0,0,0.4);
+    }
+    .tilt-card .tilt-shine {
+      position: absolute; inset: 0; z-index: 5;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none; border-radius: inherit;
+    }
+    .tilt-card:hover .tilt-shine { opacity: 1; }
+
+    /* ===== 3D Card Flip ===== */
+    .flip-card { perspective: 1200px; }
+    .flip-inner {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flip-inner.flipped { transform: rotateY(180deg); }
+    .flip-front { backface-visibility: hidden; position: relative; z-index: 1; }
+    .flip-back {
+      backface-visibility: hidden;
+      transform: rotateY(180deg);
+      position: absolute; inset: 0; z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ===== 3D Collection Card Depth ===== */
+    .collection-3d { perspective: 1000px; }
+    .collection-3d-inner {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), box-shadow 0.6s ease;
+    }
+    .collection-3d:hover .collection-3d-inner {
+      transform: translateZ(50px) scale(1.03) rotateX(2deg);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,169,110,0.15);
+    }
+    .collection-3d:hover .collection-overlay {
+      transform: translateZ(70px);
+    }
+
+    /* ===== Floating 3D Hero Product ===== */
+    @keyframes float-3d {
+      0%, 100% { transform: translateY(0) rotateY(-5deg) rotateX(3deg); }
+      25% { transform: translateY(-20px) rotateY(5deg) rotateX(-2deg); }
+      50% { transform: translateY(-8px) rotateY(-3deg) rotateX(4deg); }
+      75% { transform: translateY(-25px) rotateY(8deg) rotateX(-1deg); }
+    }
+    .hero-float-product {
+      perspective: 1000px;
+      animation: float-3d 8s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+    .hero-float-product::before {
+      content: '';
+      position: absolute; bottom: -30px; left: 10%; right: 10%; height: 40px;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.3) 0%, transparent 70%);
+      filter: blur(15px);
+      animation: float-shadow 8s ease-in-out infinite;
+    }
+    @keyframes float-shadow {
+      0%, 100% { opacity: 0.6; transform: scaleX(1); }
+      25% { opacity: 0.3; transform: scaleX(0.85); }
+      50% { opacity: 0.5; transform: scaleX(0.95); }
+      75% { opacity: 0.25; transform: scaleX(0.8); }
+    }
+
+    /* ===== Fabric Sheen ===== */
+    .product-sheen { position: relative; overflow: hidden; }
+    .product-sheen::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255,255,255,0.08) 45%,
+        rgba(255,255,255,0.15) 50%,
+        rgba(255,255,255,0.08) 55%,
+        transparent 70%
+      );
+      transform: translateX(-150%);
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none; z-index: 3;
+    }
+    .group:hover .product-sheen::after {
+      transform: translateX(150%);
+    }
+
+    /* ===== Floating Gold Particles ===== */
+    @keyframes float-particle {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: var(--p-opacity, 0.4); }
+      90% { opacity: var(--p-opacity, 0.4); }
+      100% { transform: translateY(calc(-100vh)) translateX(var(--p-drift, 20px)); opacity: 0; }
+    }
+    .particle {
+      position: absolute;
+      width: var(--p-size, 3px);
+      height: var(--p-size, 3px);
+      background: radial-gradient(circle, #D4AF37, #C9A96E);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float-particle var(--p-duration, 12s) var(--p-delay, 0s) ease-in-out infinite;
+    }
+
+    /* ===== Hero Word Stagger ===== */
+    .word-reveal {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .word-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== Magnetic Button ===== */
+    .magnetic-btn {
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ===== Counter ===== */
+    .counter-value { display: inline-block; min-width: 2ch; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .scroll-hidden, .scroll-slide-left, .scroll-slide-right,
+      .scroll-scale, .scroll-blur { opacity: 1; transform: none; filter: none; transition: none; }
+      .gradient-orb { animation: none !important; }
+      .hero-image { animation: none; transform: none; }
+      .img-reveal { clip-path: none; }
+      .product-sheen::after { display: none; }
+      .particle { display: none; }
+      .word-reveal { opacity: 1; transform: none; transition: none; }
+      .tilt-card { transform: none !important; }
+      .collection-3d-inner { transform: none !important; }
+      .hero-float-product { animation: none; transform: none; }
+      .hero-float-product::before { animation: none; }
+      .flip-inner { transition: none !important; }
+      #hero-canvas { display: none; }
+    }
+    @supports not (backdrop-filter: blur(1px)) {
+      .glass-panel, .glass-card { background: rgba(20, 20, 20, 0.92); }
+    }
+    /* CSS fallback */
+    @keyframes fallback-show { to { opacity: 1; transform: none; filter: none; } }
+    .scroll-hidden, .scroll-slide-left, .scroll-slide-right,
+    .scroll-scale, .scroll-blur { animation: fallback-show 0.01ms 2s forwards; }
+    .js-loaded .scroll-hidden, .js-loaded .scroll-slide-left,
+    .js-loaded .scroll-slide-right, .js-loaded .scroll-scale,
+    .js-loaded .scroll-blur { animation: none; transition: none; }
+    .js-loaded .tilt-card { transition: none; }
+    .js-loaded .collection-3d-inner { transition: none; }
+  </style>
+</head>
+
+<body class="bg-luxury-black text-text-primary font-body antialiased overflow-x-hidden">
+
+  <!-- ========== NAVBAR ========== -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <nav class="glass-panel mx-4 mt-4 rounded-2xl px-6 py-4 lg:mx-8 lg:px-8" role="navigation" aria-label="Main navigation">
+      <div class="mx-auto flex max-w-7xl items-center justify-between">
+        <a href="#" class="font-heading text-2xl font-bold tracking-wider text-gold cursor-pointer" aria-label="MAISON Home">MAISON</a>
+        <div class="hidden items-center gap-8 md:flex">
+          <a href="#featured" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">New In</a>
+          <a href="#collections" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Collections</a>
+          <a href="#heritage" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Our Story</a>
+          <a href="#membership" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">VIP Club</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="#membership" class="hidden rounded-full border border-gold/30 bg-gold/10 px-6 py-2 font-body text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/20 hover:border-gold/50 sm:inline-block cursor-pointer">Join VIP</a>
+          <button id="mobile-menu-btn" class="text-text-secondary transition-colors duration-300 hover:text-gold md:hidden cursor-pointer" aria-label="Toggle mobile menu" aria-expanded="false">
+            <i data-lucide="menu" class="h-6 w-6"></i>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden flex-col gap-4 pt-6 pb-2 md:hidden">
+        <a href="#featured" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">New In</a>
+        <a href="#collections" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Collections</a>
+        <a href="#heritage" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">Our Story</a>
+        <a href="#membership" class="font-body text-sm font-medium text-text-secondary transition-colors duration-300 hover:text-gold cursor-pointer">VIP Club</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero" class="relative min-h-screen overflow-hidden">
+      <!-- Three.js Canvas -->
+      <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-[1] pointer-events-none" aria-hidden="true"></canvas>
+
+      <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&h=1080&fit=crop&q=80"
+             alt="Elegant woman in luxury designer outfit walking on runway"
+             class="hero-image h-full w-full object-cover object-top" data-parallax-hero style="will-change:transform">
+        <div class="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/60 to-luxury-black/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-luxury-black/60 to-transparent"></div>
+      </div>
+
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[2]">
+        <div class="gradient-orb absolute -top-32 right-1/4 h-96 w-96 bg-gradient-to-br from-gold/30 to-gold-dark/10 animate-orb-1" data-parallax-orb></div>
+        <div class="gradient-orb absolute bottom-1/4 -left-20 h-[400px] w-[400px] bg-gradient-to-tr from-purple-900/20 to-transparent animate-orb-2" data-parallax-orb></div>
+        <!-- Gold Particles -->
+        <div class="particle" style="left:10%;bottom:0;--p-size:2px;--p-duration:14s;--p-delay:0s;--p-drift:30px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:20%;bottom:0;--p-size:3px;--p-duration:11s;--p-delay:2s;--p-drift:-20px;--p-opacity:0.5"></div>
+        <div class="particle" style="left:35%;bottom:0;--p-size:2px;--p-duration:16s;--p-delay:4s;--p-drift:15px;--p-opacity:0.35"></div>
+        <div class="particle" style="left:50%;bottom:0;--p-size:4px;--p-duration:13s;--p-delay:1s;--p-drift:-25px;--p-opacity:0.4"></div>
+        <div class="particle" style="left:65%;bottom:0;--p-size:2px;--p-duration:18s;--p-delay:3s;--p-drift:10px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:75%;bottom:0;--p-size:3px;--p-duration:10s;--p-delay:5s;--p-drift:-35px;--p-opacity:0.45"></div>
+        <div class="particle" style="left:85%;bottom:0;--p-size:2px;--p-duration:15s;--p-delay:7s;--p-drift:20px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:45%;bottom:0;--p-size:3px;--p-duration:12s;--p-delay:6s;--p-drift:-15px;--p-opacity:0.5"></div>
+        <div class="particle" style="left:5%;bottom:0;--p-size:2px;--p-duration:17s;--p-delay:8s;--p-drift:25px;--p-opacity:0.35"></div>
+        <div class="particle" style="left:92%;bottom:0;--p-size:3px;--p-duration:14s;--p-delay:3.5s;--p-drift:-10px;--p-opacity:0.4"></div>
+      </div>
+
+      <div class="relative z-[10] flex min-h-screen flex-col justify-center px-4">
+        <div class="mx-auto w-full max-w-7xl">
+          <div class="flex items-center justify-between">
+            <div class="max-w-2xl">
+              <p class="scroll-hidden font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-6">Spring / Summer 2026</p>
+              <h1 id="hero-heading" class="font-display text-5xl font-bold leading-[1.1] text-text-primary sm:text-6xl lg:text-7xl xl:text-8xl">
+                <span class="word-reveal" style="transition-delay:0.1s">Dress</span> <span class="word-reveal" style="transition-delay:0.25s">the</span><br>
+                <span class="word-reveal text-shimmer" style="transition-delay:0.45s">Woman</span><br>
+                <span class="word-reveal" style="transition-delay:0.65s">You</span> <span class="word-reveal" style="transition-delay:0.8s">Are</span>
+              </h1>
+              <p class="scroll-hidden stagger-2 mt-6 max-w-md font-body text-lg text-text-secondary leading-relaxed">
+                Luxury women's fashion designed with intention. From runway to your wardrobe — elegance redefined.
+              </p>
+              <div class="scroll-hidden stagger-3 mt-10 flex flex-wrap gap-4">
+                <a href="#featured" class="magnetic-btn inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 font-body text-sm font-semibold tracking-wide text-luxury-black transition-all duration-300 hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 cursor-pointer">
+                  Shop New In
+                  <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                </a>
+                <a href="#heritage" class="glass-panel inline-flex items-center gap-2 rounded-full px-8 py-4 font-body text-sm font-medium text-text-primary transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                  Our Story
+                </a>
+              </div>
+            </div>
+
+            <!-- Floating 3D Product Showcase -->
+            <div class="hidden lg:block relative" aria-hidden="true">
+              <div class="hero-float-product relative w-64 xl:w-80">
+                <div class="rounded-2xl overflow-hidden border border-gold/20 shadow-2xl shadow-gold/10">
+                  <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&h=700&fit=crop&q=80"
+                       alt="" class="w-full aspect-[3/4] object-cover">
+                </div>
+                <div class="glass-panel absolute -bottom-4 -left-6 rounded-xl px-4 py-2.5 text-center">
+                  <p class="font-heading text-sm font-bold text-gold">$2,890</p>
+                  <p class="font-body text-[10px] text-text-muted tracking-wider uppercase">Noir Silk Gown</p>
+                </div>
+                <div class="absolute -top-3 -right-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/90 border-2 border-luxury-black shadow-lg">
+                  <i data-lucide="star" class="h-4 w-4 text-luxury-black fill-luxury-black"></i>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" aria-hidden="true">
+        <span class="font-body text-xs tracking-widest uppercase text-text-muted">Scroll</span>
+        <div class="h-12 w-px bg-gradient-to-b from-gold/50 to-transparent" style="animation: scroll-bounce 2s ease-in-out infinite;"></div>
+      </div>
+    </section>
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="relative border-y border-white/5 bg-luxury-surface py-12 px-4">
+      <div class="mx-auto max-w-7xl">
+        <div id="stats-bar" class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          <div class="scroll-hidden text-center">
+            <p class="font-heading text-4xl font-bold text-text-primary lg:text-5xl"><span class="counter-value" data-count="200">0</span><span class="text-gold counter-suffix" data-suffix="+"></span></p>
+            <p class="mt-2 font-body text-sm text-text-secondary">Exclusive Designs</p>
+          </div>
+          <div class="scroll-hidden stagger-1 text-center">
+            <p class="font-heading text-4xl font-bold text-text-primary lg:text-5xl"><span class="counter-value" data-count="32">0</span></p>
+            <p class="mt-2 font-body text-sm text-text-secondary">Global Boutiques</p>
+          </div>
+          <div class="scroll-hidden stagger-2 text-center">
+            <p class="font-heading text-4xl font-bold text-text-primary lg:text-5xl"><span class="counter-value" data-count="50">0</span><span class="text-gold counter-suffix" data-suffix="K+"></span></p>
+            <p class="mt-2 font-body text-sm text-text-secondary">Women Styled</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FEATURED PRODUCTS (NEW IN) ========== -->
+    <section id="featured" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+        <div class="gradient-orb absolute left-1/4 top-0 h-64 w-64 bg-gradient-to-br from-purple-800/15 to-transparent"></div>
+        <div class="gradient-orb absolute right-1/4 bottom-0 h-80 w-80 bg-gradient-to-tl from-gold/8 to-transparent"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+          <div>
+            <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Just Dropped</p>
+            <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl">New In</h2>
+          </div>
+          <a href="#" class="inline-flex items-center gap-2 font-body text-sm font-medium text-gold transition-colors duration-300 hover:text-gold-light cursor-pointer">
+            View All <i data-lucide="arrow-right" class="h-4 w-4"></i>
+          </a>
+        </div>
+
+        <!-- Product Grid with 3D Perspective + Flip -->
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+          <!-- Product 1: Dress -->
+          <article class="scroll-hidden stagger-1 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <!-- FRONT -->
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop&q=80"
+                         alt="Woman in elegant black silk evening dress"
+                         class="product-img img-reveal h-full w-full object-cover" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <span class="absolute top-3 left-3 rounded-full bg-gold/90 px-3 py-1 font-body text-[11px] font-semibold tracking-wider uppercase text-luxury-black z-10">New</span>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Dresses</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Noir Silk Gown</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$2,890</p>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Noir Silk Gown</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$2,890</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Italian silk, hand-finished</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Noir Black</p>
+                      <p class="flex items-center gap-2"><i data-lucide="shirt" class="h-4 w-4 text-gold"></i> Sizes: XS — XL</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 2: Blazer -->
+          <article class="scroll-hidden stagger-2 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop&q=80"
+                         alt="Tailored women's beige blazer on display"
+                         class="product-img img-reveal h-full w-full object-cover" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Outerwear</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Tailored Wool Blazer</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$1,450</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Tailored Wool Blazer</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$1,450</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Scottish wool blend</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Camel / Ivory</p>
+                      <p class="flex items-center gap-2"><i data-lucide="shirt" class="h-4 w-4 text-gold"></i> Sizes: XS — XL</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 3: Handbag -->
+          <article class="scroll-hidden stagger-3 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=800&fit=crop&q=80"
+                         alt="Luxury quilted leather handbag in champagne gold"
+                         class="product-img img-reveal h-full w-full object-cover" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <span class="absolute top-3 left-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 font-body text-[11px] font-semibold tracking-wider uppercase text-text-primary z-10">Exclusive</span>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Handbags</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Quilted Shoulder Bag</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$3,200</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Quilted Shoulder Bag</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$3,200</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Full-grain lambskin</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Champagne Gold</p>
+                      <p class="flex items-center gap-2"><i data-lucide="box" class="h-4 w-4 text-gold"></i> 28 x 18 x 9 cm</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 4: Heels -->
+          <article class="scroll-hidden stagger-4 group cursor-pointer">
+            <div class="flip-card">
+              <div class="flip-inner">
+                <div class="flip-front glass-card tilt-card rounded-2xl">
+                  <div class="tilt-shine rounded-2xl"></div>
+                  <div class="relative aspect-[3/4] overflow-hidden rounded-t-2xl product-sheen">
+                    <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=800&fit=crop&q=80"
+                         alt="Elegant strappy gold high heel sandals"
+                         class="product-img img-reveal h-full w-full object-cover" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div class="absolute bottom-3 left-3 right-3 opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 z-10">
+                      <button class="flip-btn w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all duration-300 hover:bg-white/15 cursor-pointer">Quick View</button>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-muted">Shoes</p>
+                    <h3 class="mt-1.5 font-heading text-base font-semibold text-text-primary">Aurelia Strappy Heels</h3>
+                    <p class="mt-1 font-heading text-base font-bold text-gold">$980</p>
+                  </div>
+                </div>
+                <div class="flip-back glass-card rounded-2xl p-6 flex flex-col justify-between">
+                  <div>
+                    <p class="font-body text-[11px] font-medium tracking-wider uppercase text-gold mb-2">Quick View</p>
+                    <h3 class="font-heading text-xl font-bold text-text-primary">Aurelia Strappy Heels</h3>
+                    <p class="font-heading text-2xl font-bold text-gold mt-2">$980</p>
+                    <div class="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
+                      <p class="flex items-center gap-2"><i data-lucide="ruler" class="h-4 w-4 text-gold"></i> Metallic leather upper</p>
+                      <p class="flex items-center gap-2"><i data-lucide="palette" class="h-4 w-4 text-gold"></i> Gold / Rose Gold</p>
+                      <p class="flex items-center gap-2"><i data-lucide="shirt" class="h-4 w-4 text-gold"></i> Sizes: 35 — 42</p>
+                      <p class="flex items-center gap-2"><i data-lucide="truck" class="h-4 w-4 text-gold"></i> Free express shipping</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 space-y-3">
+                    <button class="w-full rounded-full bg-gold py-3 font-body text-sm font-semibold text-luxury-black transition-all hover:bg-gold-light cursor-pointer">Add to Bag</button>
+                    <button class="flip-btn-back w-full rounded-full glass-panel py-2.5 font-body text-xs font-medium text-text-primary transition-all hover:bg-white/15 cursor-pointer">Flip Back</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== HERITAGE / OUR STORY ========== -->
+    <section id="heritage" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute right-0 top-1/4 h-80 w-80 gradient-orb bg-gradient-to-bl from-gold/12 to-transparent"></div>
+
+      <div class="mx-auto max-w-7xl">
+        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+
+          <div class="scroll-slide-left relative">
+            <div class="glass-card rounded-2xl overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&h=1000&fit=crop&q=80"
+                   alt="Fashion designer draping fabric on a dress form in her atelier"
+                   class="w-full object-cover aspect-[4/5] img-reveal" loading="lazy">
+            </div>
+            <div class="glass-panel absolute -bottom-5 -right-4 sm:-right-6 rounded-xl px-5 py-3.5 text-center">
+              <p class="font-heading text-2xl font-bold text-gold">15<span class="text-gold-light">+</span></p>
+              <p class="font-body text-[11px] font-medium tracking-wider uppercase text-text-secondary">Years of Design</p>
+            </div>
+          </div>
+
+          <div class="scroll-slide-right">
+            <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-4">Our Heritage</p>
+            <h2 class="font-heading text-3xl font-bold leading-snug text-text-primary sm:text-4xl lg:text-5xl">
+              Designed for Women, by Women
+            </h2>
+            <div class="mt-8 space-y-5 font-body text-base leading-relaxed text-text-secondary lg:text-lg">
+              <p>MAISON was founded with one belief: every woman deserves to feel powerful in what she wears. Our designs celebrate femininity, confidence, and individuality.</p>
+              <p>From our Milan atelier, each piece is crafted with the finest European fabrics — silk from Lake Como, wool from Scotland, lace from Calais — to create garments that feel as extraordinary as they look.</p>
+            </div>
+            <div class="glass-card mt-8 rounded-xl p-6">
+              <p class="font-display text-lg italic leading-relaxed text-text-primary">
+                "Fashion fades, but the way a woman feels in our clothes — that is forever."
+              </p>
+              <p class="mt-3 font-body text-sm font-medium tracking-wider uppercase text-gold-muted">— Creative Director</p>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a href="#" class="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-6 py-3 font-body text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/20 hover:border-gold/50 cursor-pointer">
+                Read Our Story <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </a>
+              <a href="#" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 font-body text-sm font-medium text-text-secondary transition-all duration-300 hover:text-text-primary hover:border-white/20 cursor-pointer">
+                Book a Styling Session <i data-lucide="calendar" class="h-4 w-4"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== COLLECTIONS ========== -->
+    <section id="collections" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+        <div class="gradient-orb absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-gold/6 via-purple-900/8 to-gold/6"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+          <div>
+            <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Shop By</p>
+            <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl">Our Collections</h2>
+          </div>
+          <a href="#" class="inline-flex items-center gap-2 font-body text-sm font-medium text-gold transition-colors duration-300 hover:text-gold-light cursor-pointer">
+            View All <i data-lucide="arrow-right" class="h-4 w-4"></i>
+          </a>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3">
+
+          <a href="#" class="scroll-scale stagger-1 group collection-3d relative block overflow-hidden rounded-2xl cursor-pointer">
+            <div class="collection-3d-inner aspect-[3/4] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1518622358385-8ea7d0794bf6?w=600&h=800&fit=crop&q=80"
+                   alt="Women's evening wear collection featuring flowing gowns"
+                   class="h-full w-full object-cover img-reveal transition-transform duration-700 group-hover:scale-110" loading="lazy">
+            </div>
+            <div class="collection-overlay absolute inset-0 flex flex-col justify-end p-6">
+              <p class="font-body text-xs font-medium tracking-wider uppercase text-gold">42 Styles</p>
+              <h3 class="mt-1 font-heading text-2xl font-bold text-text-primary">Evening Wear</h3>
+              <div class="mt-3 inline-flex items-center gap-2 font-body text-sm font-medium text-text-secondary transition-colors duration-300 group-hover:text-gold">
+                Explore <i data-lucide="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="scroll-scale stagger-2 group collection-3d relative block overflow-hidden rounded-2xl cursor-pointer">
+            <div class="collection-3d-inner aspect-[3/4] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=800&fit=crop&q=80"
+                   alt="Women shopping luxury ready-to-wear clothing"
+                   class="h-full w-full object-cover img-reveal transition-transform duration-700 group-hover:scale-110" loading="lazy">
+            </div>
+            <div class="collection-overlay absolute inset-0 flex flex-col justify-end p-6">
+              <p class="font-body text-xs font-medium tracking-wider uppercase text-gold">68 Styles</p>
+              <h3 class="mt-1 font-heading text-2xl font-bold text-text-primary">Ready-to-Wear</h3>
+              <div class="mt-3 inline-flex items-center gap-2 font-body text-sm font-medium text-text-secondary transition-colors duration-300 group-hover:text-gold">
+                Explore <i data-lucide="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="scroll-scale stagger-3 group collection-3d relative block overflow-hidden rounded-2xl cursor-pointer">
+            <div class="collection-3d-inner aspect-[3/4] overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&h=800&fit=crop&q=80"
+                   alt="Luxury women's accessories and designer handbags"
+                   class="h-full w-full object-cover img-reveal transition-transform duration-700 group-hover:scale-110" loading="lazy">
+            </div>
+            <div class="collection-overlay absolute inset-0 flex flex-col justify-end p-6">
+              <p class="font-body text-xs font-medium tracking-wider uppercase text-gold">35 Styles</p>
+              <h3 class="mt-1 font-heading text-2xl font-bold text-text-primary">Accessories</h3>
+              <div class="mt-3 inline-flex items-center gap-2 font-body text-sm font-medium text-text-secondary transition-colors duration-300 group-hover:text-gold">
+                Explore <i data-lucide="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== BRAND VALUES ========== -->
+    <section class="relative py-20 px-4 lg:py-28">
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden mx-auto max-w-2xl text-center mb-14">
+          <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Our Promise</p>
+          <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl">What We Stand For</h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="scroll-blur stagger-1 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="sparkles" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Feminine Power</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Designs that celebrate confidence, grace, and the strength in every woman.</p>
+          </div>
+          <div class="scroll-blur stagger-2 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="scissors" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Artisan Craft</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Handcrafted by master seamstresses with decades of couture expertise.</p>
+          </div>
+          <div class="scroll-blur stagger-3 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="leaf" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Sustainable Luxury</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Ethically sourced fabrics and responsible production for a better future.</p>
+          </div>
+          <div class="scroll-blur stagger-4 glass-card rounded-2xl p-7 text-center cursor-pointer">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+              <i data-lucide="heart" class="h-6 w-6 text-gold"></i>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-text-primary">Timeless Style</h3>
+            <p class="mt-3 font-body text-sm leading-relaxed text-text-secondary">Pieces designed to transcend seasons and remain elegant for years to come.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+        <div class="gradient-orb absolute right-0 top-1/3 h-[400px] w-[400px] bg-gradient-to-l from-gold/10 to-transparent"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="scroll-hidden mx-auto max-w-2xl text-center mb-14">
+          <p class="font-body text-sm font-medium tracking-[0.25em] uppercase text-gold mb-3">Reviews</p>
+          <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl">What Our Women Say</h2>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3">
+
+          <div class="scroll-hidden stagger-1 glass-card rounded-2xl p-7 cursor-pointer">
+            <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+            </div>
+            <blockquote class="font-body text-sm leading-relaxed text-text-secondary">
+              "The Noir Silk Gown made me feel like the most elegant woman in the room. The cut is perfection and the fabric feels incredible on the skin."
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+                <span class="font-heading text-xs font-semibold text-gold">SL</span>
+              </div>
+              <div>
+                <p class="font-body text-sm font-medium text-text-primary">Sofia L.</p>
+                <p class="font-body text-xs text-text-muted">VIP Member</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="scroll-hidden stagger-2 glass-card rounded-2xl p-7 cursor-pointer">
+            <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+            </div>
+            <blockquote class="font-body text-sm leading-relaxed text-text-secondary">
+              "MAISON understands a woman's body. Every blazer, every dress — it all fits like it was made just for me. I've never felt this confident."
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+                <span class="font-heading text-xs font-semibold text-gold">AR</span>
+              </div>
+              <div>
+                <p class="font-body text-sm font-medium text-text-primary">Amara R.</p>
+                <p class="font-body text-xs text-text-muted">Founding Member</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="scroll-hidden stagger-3 glass-card rounded-2xl p-7 cursor-pointer">
+            <div class="flex gap-1 mb-4" aria-label="5 out of 5 stars">
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+              <i data-lucide="star" class="h-4 w-4 fill-gold text-gold"></i>
+            </div>
+            <blockquote class="font-body text-sm leading-relaxed text-text-secondary">
+              "The Quilted Shoulder Bag is a dream. I get compliments every single time I carry it. Worth every penny for the craftsmanship."
+            </blockquote>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gold/10 border border-gold/20">
+                <span class="font-heading text-xs font-semibold text-gold">EC</span>
+              </div>
+              <div>
+                <p class="font-body text-sm font-medium text-text-primary">Elena C.</p>
+                <p class="font-body text-xs text-text-muted">Style Editor</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MEMBERSHIP CTA ========== -->
+    <section id="membership" class="relative py-20 px-4 lg:py-28">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+        <div class="gradient-orb absolute -left-32 top-1/4 h-[500px] w-[500px] bg-gradient-to-r from-gold/15 to-transparent animate-orb-1" data-parallax-orb></div>
+        <div class="gradient-orb absolute -right-32 bottom-1/4 h-[400px] w-[400px] bg-gradient-to-l from-purple-800/15 to-transparent animate-orb-2" data-parallax-orb></div>
+        <!-- Gold Particles -->
+        <div class="particle" style="left:15%;bottom:0;--p-size:3px;--p-duration:12s;--p-delay:1s;--p-drift:-20px;--p-opacity:0.4"></div>
+        <div class="particle" style="left:30%;bottom:0;--p-size:2px;--p-duration:15s;--p-delay:3s;--p-drift:25px;--p-opacity:0.35"></div>
+        <div class="particle" style="left:55%;bottom:0;--p-size:3px;--p-duration:10s;--p-delay:0s;--p-drift:-15px;--p-opacity:0.5"></div>
+        <div class="particle" style="left:70%;bottom:0;--p-size:2px;--p-duration:14s;--p-delay:5s;--p-drift:30px;--p-opacity:0.3"></div>
+        <div class="particle" style="left:85%;bottom:0;--p-size:3px;--p-duration:11s;--p-delay:2s;--p-drift:-10px;--p-opacity:0.45"></div>
+        <div class="particle" style="left:40%;bottom:0;--p-size:2px;--p-duration:16s;--p-delay:4s;--p-drift:15px;--p-opacity:0.35"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-4xl">
+        <div class="scroll-hidden glass-panel rounded-3xl overflow-hidden">
+          <div class="relative bg-gradient-to-br from-gold/5 via-transparent to-purple-900/10 p-10 sm:p-14 text-center">
+            <div class="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/10 px-4 py-1.5 mb-8">
+              <i data-lucide="crown" class="h-4 w-4 text-gold"></i>
+              <span class="font-body text-xs font-semibold tracking-widest uppercase text-gold">Exclusive Access</span>
+            </div>
+            <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl lg:text-5xl">
+              Join the <span class="text-shimmer">VIP Club</span>
+            </h2>
+            <p class="mx-auto mt-4 max-w-lg font-body text-text-secondary leading-relaxed">
+              Get first access to new drops, private styling sessions, and members-only events designed for the modern woman.
+            </p>
+            <ul class="mx-auto mt-8 max-w-md space-y-3 text-left">
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">48-hour early access to every new collection</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">Free personal styling consultations</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">Invitations to private runway shows</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i data-lucide="check" class="h-5 w-5 flex-shrink-0 text-gold"></i>
+                <span class="font-body text-sm text-text-secondary">Complimentary alterations on all orders</span>
+              </li>
+            </ul>
+            <form id="membership-form" class="mx-auto mt-10 flex max-w-md flex-col gap-3 sm:flex-row">
+              <label for="membership-email" class="sr-only">Email address</label>
+              <input id="membership-email" type="email" required placeholder="Enter your email"
+                class="flex-1 rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-body text-sm text-text-primary placeholder:text-text-muted backdrop-blur-sm transition-all duration-300 focus:border-gold/30 focus:bg-white/8 focus:outline-none focus:ring-2 focus:ring-gold/20">
+              <button type="submit"
+                class="magnetic-btn rounded-full bg-gold px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-luxury-black transition-all duration-300 hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 cursor-pointer">
+                Join Now
+              </button>
+            </form>
+            <p class="mt-6 font-body text-xs font-medium tracking-wider uppercase text-text-muted">
+              Free to join &middot; Cancel anytime
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="relative border-t border-white/5 py-14 px-4">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+
+        <div class="lg:col-span-2">
+          <a href="#" class="font-heading text-2xl font-bold tracking-wider text-gold cursor-pointer">MAISON</a>
+          <p class="mt-4 font-body text-sm leading-relaxed text-text-muted max-w-xs">
+            Luxury women's fashion designed with intention. Timeless elegance for the modern woman.
+          </p>
+          <div class="mt-6 flex gap-3">
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-muted transition-all duration-300 hover:text-gold hover:border-gold/30 cursor-pointer" aria-label="Instagram">
+              <i data-lucide="instagram" class="h-4 w-4"></i>
+            </a>
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-muted transition-all duration-300 hover:text-gold hover:border-gold/30 cursor-pointer" aria-label="Pinterest">
+              <i data-lucide="bookmark" class="h-4 w-4"></i>
+            </a>
+            <a href="#" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text-muted transition-all duration-300 hover:text-gold hover:border-gold/30 cursor-pointer" aria-label="TikTok">
+              <i data-lucide="play" class="h-4 w-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-body text-sm font-semibold tracking-wider uppercase text-text-secondary mb-4">Shop</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">New In</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Dresses</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Outerwear</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Handbags</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Shoes</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-body text-sm font-semibold tracking-wider uppercase text-text-secondary mb-4">Services</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Personal Styling</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Alterations</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Gift Cards</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Size Guide</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-body text-sm font-semibold tracking-wider uppercase text-text-secondary mb-4">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Our Story</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Sustainability</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Privacy Policy</a></li>
+            <li><a href="#" class="font-body text-sm text-text-muted transition-colors duration-300 hover:text-gold cursor-pointer">Contact Us</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-12 border-t border-white/5 pt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+        <p class="font-body text-xs text-text-muted">&copy; 2026 MAISON. All rights reserved.</p>
+        <p class="font-body text-xs text-text-muted">Designed for women, by women</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- JavaScript: Three.js + GSAP -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.documentElement.classList.add('js-loaded');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.innerWidth < 768;
+
+      // ============================================================
+      // THREE.JS — 3D Gold Particle Field
+      // ============================================================
+      if (typeof THREE !== 'undefined' && !prefersReducedMotion && !isMobile) {
+        const canvas = document.getElementById('hero-canvas');
+        const heroSection = document.getElementById('hero');
+        if (canvas && heroSection) {
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+          camera.position.z = 5;
+
+          const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+          // Gold particles
+          const particleCount = 200;
+          const geometry = new THREE.BufferGeometry();
+          const positions = new Float32Array(particleCount * 3);
+          const sizes = new Float32Array(particleCount);
+          for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 15;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 8;
+            sizes[i] = Math.random() * 3 + 1;
+          }
+          geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+          geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+          const particleMaterial = new THREE.PointsMaterial({
+            color: 0xC9A96E,
+            size: 0.04,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending,
+            sizeAttenuation: true
+          });
+          const particles = new THREE.Points(geometry, particleMaterial);
+          scene.add(particles);
+
+          // Floating wireframe geometry
+          const icoGeo = new THREE.IcosahedronGeometry(1.2, 1);
+          const icoMat = new THREE.MeshBasicMaterial({
+            color: 0xC9A96E, wireframe: true, transparent: true, opacity: 0.12
+          });
+          const icosahedron = new THREE.Mesh(icoGeo, icoMat);
+          icosahedron.position.set(3, 0.5, -2);
+          scene.add(icosahedron);
+
+          // Second smaller geometry
+          const torusGeo = new THREE.TorusGeometry(0.6, 0.2, 12, 48);
+          const torusMat = new THREE.MeshBasicMaterial({
+            color: 0xD4AF37, wireframe: true, transparent: true, opacity: 0.08
+          });
+          const torus = new THREE.Mesh(torusGeo, torusMat);
+          torus.position.set(-3.5, -1, -1);
+          scene.add(torus);
+
+          let mouseX = 0, mouseY = 0;
+          window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+          }, { passive: true });
+
+          function animateThree() {
+            requestAnimationFrame(animateThree);
+            const heroRect = heroSection.getBoundingClientRect();
+            if (heroRect.bottom < 0) return; // Skip when out of view
+
+            particles.rotation.y += 0.0008;
+            particles.rotation.x += 0.0003;
+
+            icosahedron.rotation.x += 0.003;
+            icosahedron.rotation.y += 0.005;
+
+            torus.rotation.x += 0.004;
+            torus.rotation.z += 0.006;
+
+            // Mouse influence
+            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+          }
+          animateThree();
+
+          window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+          });
+        }
+      }
+
+      // ============================================================
+      // GSAP + ScrollTrigger
+      // ============================================================
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // GSAP controls all animated elements — clear CSS-set opacity/transform
+        // so GSAP fromTo works correctly with explicit start/end values
+        const allAnimated = '.scroll-hidden, .scroll-slide-left, .scroll-slide-right, .scroll-scale, .scroll-blur, .word-reveal';
+        gsap.set(allAnimated, { clearProps: 'opacity,transform,filter' });
+        // Now re-set them to hidden via GSAP inline styles (overrides CSS classes)
+        document.querySelectorAll('.scroll-hidden').forEach(el => gsap.set(el, { opacity: 0, y: 40 }));
+        document.querySelectorAll('.scroll-slide-left').forEach(el => gsap.set(el, { opacity: 0, x: -80 }));
+        document.querySelectorAll('.scroll-slide-right').forEach(el => gsap.set(el, { opacity: 0, x: 80 }));
+        document.querySelectorAll('.scroll-scale').forEach(el => gsap.set(el, { opacity: 0, scale: 0.8 }));
+        document.querySelectorAll('.scroll-blur').forEach(el => gsap.set(el, { opacity: 0, y: 30, filter: 'blur(15px)' }));
+        document.querySelectorAll('.word-reveal').forEach(el => gsap.set(el, { opacity: 0, y: 60 }));
+        document.querySelectorAll('.img-reveal').forEach(el => gsap.set(el, { clipPath: 'inset(100% 0% 0% 0%)' }));
+
+        // --- Hero Entrance Timeline ---
+        const heroTL = gsap.timeline({ delay: 0.3 });
+
+        heroTL.to('#hero-heading .word-reveal', {
+          y: 0, opacity: 1, duration: 0.8,
+          stagger: 0.15, ease: 'power3.out'
+        })
+        .to('#hero .scroll-hidden', {
+          y: 0, opacity: 1, duration: 0.7,
+          stagger: 0.12, ease: 'power2.out'
+        }, '-=0.4')
+        .fromTo('.hero-float-product',
+          { scale: 0.8, opacity: 0, rotateY: -20 },
+          { scale: 1, opacity: 1, rotateY: 0, duration: 1.2, ease: 'power3.out' },
+          '-=0.5'
+        );
+
+        // --- Scroll-Triggered Animations for All Sections ---
+
+        // Generic fade-up for .scroll-hidden (outside hero)
+        gsap.utils.toArray('.scroll-hidden').forEach((el) => {
+          if (el.closest('#hero')) return;
+          const delay = el.classList.contains('stagger-1') ? 0.1 :
+                        el.classList.contains('stagger-2') ? 0.2 :
+                        el.classList.contains('stagger-3') ? 0.3 :
+                        el.classList.contains('stagger-4') ? 0.4 : 0;
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            y: 0, opacity: 1, duration: 0.8, delay, ease: 'power2.out'
+          });
+        });
+
+        // Slide-left
+        gsap.utils.toArray('.scroll-slide-left').forEach((el) => {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            x: 0, opacity: 1, duration: 1, ease: 'power3.out'
+          });
+        });
+
+        // Slide-right
+        gsap.utils.toArray('.scroll-slide-right').forEach((el) => {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            x: 0, opacity: 1, duration: 1, ease: 'power3.out'
+          });
+        });
+
+        // Scale-up for collections
+        gsap.utils.toArray('.scroll-scale').forEach((el, i) => {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            scale: 1, opacity: 1, duration: 0.9, delay: i * 0.15, ease: 'back.out(1.4)'
+          });
+        });
+
+        // Blur-in for brand values
+        gsap.utils.toArray('.scroll-blur').forEach((el, i) => {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            filter: 'blur(0px)', opacity: 1, y: 0, duration: 0.8,
+            delay: i * 0.12, ease: 'power2.out'
+          });
+        });
+
+        // --- Image Reveal with clip-path ---
+        gsap.utils.toArray('.img-reveal').forEach((img) => {
+          gsap.to(img, {
+            clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'power4.inOut',
+            scrollTrigger: { trigger: img, start: 'top 88%', once: true }
+          });
+        });
+
+        // --- Animated Counter (GSAP) ---
+        const statsBar = document.getElementById('stats-bar');
+        if (statsBar) {
+          ScrollTrigger.create({
+            trigger: statsBar, start: 'top 80%', once: true,
+            onEnter: () => {
+              statsBar.querySelectorAll('.counter-value').forEach((el) => {
+                const target = parseInt(el.dataset.count, 10);
+                gsap.to({ val: 0 }, {
+                  val: target, duration: 2.5, ease: 'power2.out',
+                  onUpdate: function () { el.textContent = Math.floor(this.targets()[0].val); }
+                });
+              });
+            }
+          });
+        }
+
+        // --- Parallax with GSAP ScrollTrigger (smooth scrub) ---
+        if (!isMobile) {
+          const heroImg = document.querySelector('[data-parallax-hero]');
+          if (heroImg) {
+            gsap.to(heroImg, {
+              y: 200, ease: 'none',
+              scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1 }
+            });
+          }
+
+          const heritageImg = document.querySelector('#heritage .glass-card img');
+          if (heritageImg) {
+            gsap.to(heritageImg, {
+              y: -60, scale: 1.08, ease: 'none',
+              scrollTrigger: { trigger: '#heritage', start: 'top bottom', end: 'bottom top', scrub: 1.5 }
+            });
+          }
+
+          gsap.utils.toArray('[data-parallax-orb]').forEach((orb, i) => {
+            gsap.to(orb, {
+              y: (i % 2 === 0) ? 150 : -100, ease: 'none',
+              scrollTrigger: { trigger: orb.closest('section') || orb, start: 'top bottom', end: 'bottom top', scrub: 2 }
+            });
+          });
+
+          const floatProduct = document.querySelector('.hero-float-product');
+          if (floatProduct) {
+            gsap.to(floatProduct, {
+              y: 120, ease: 'none',
+              scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.8 }
+            });
+          }
+        }
+
+        // --- Navbar scroll (GSAP) ---
+        const navInner = document.querySelector('#navbar nav');
+        if (navInner) {
+          ScrollTrigger.create({
+            start: 50, end: 99999,
+            onEnter: () => {
+              gsap.to(navInner, { background: 'rgba(10,10,10,0.85)', backdropFilter: 'blur(30px)', duration: 0.4 });
+            },
+            onLeaveBack: () => {
+              gsap.to(navInner, { background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)', duration: 0.4 });
+            }
+          });
+        }
+      }
+
+      // ============================================================
+      // INTERACTIVE EFFECTS (kept vanilla for direct mouse response)
+      // ============================================================
+
+      // --- Mobile Menu ---
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.contains('flex');
+          mobileMenu.classList.toggle('flex', !isOpen);
+          mobileMenu.classList.toggle('hidden', isOpen);
+          mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+        mobileMenu.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('flex');
+            mobileMenu.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // --- 3D Tilt on Product Cards (±15deg) ---
+      if (!prefersReducedMotion && !isMobile) {
+        document.querySelectorAll('.tilt-card').forEach((card) => {
+          const shine = card.querySelector('.tilt-shine');
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -15;
+            const rotateY = ((x - centerX) / centerX) * 15;
+            gsap.to(card, {
+              rotateX, rotateY, translateZ: 20,
+              duration: 0.15, ease: 'power1.out', overwrite: 'auto'
+            });
+            if (shine) {
+              shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.25) 0%, rgba(201,169,110,0.1) 40%, transparent 60%)`;
+            }
+          });
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              rotateX: 0, rotateY: 0, translateZ: 0,
+              duration: 0.8, ease: 'elastic.out(1, 0.4)', overwrite: 'auto'
+            });
+            if (shine) shine.style.background = '';
+          });
+        });
+      }
+
+      // --- 3D Card Flip (Quick View) ---
+      document.querySelectorAll('.flip-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const flipInner = btn.closest('.flip-inner');
+          if (flipInner) {
+            const front = flipInner.querySelector('.flip-front');
+            const back = flipInner.querySelector('.flip-back');
+            gsap.to(flipInner, { rotateY: 180, duration: 0.8, ease: 'power2.inOut',
+              onComplete: () => {
+                if (back) back.style.pointerEvents = 'auto';
+                if (front) front.style.pointerEvents = 'none';
+              }
+            });
+            if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 200);
+          }
+        });
+      });
+      document.querySelectorAll('.flip-btn-back').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const flipInner = btn.closest('.flip-inner');
+          if (flipInner) {
+            const front = flipInner.querySelector('.flip-front');
+            const back = flipInner.querySelector('.flip-back');
+            gsap.to(flipInner, { rotateY: 0, duration: 0.8, ease: 'power2.inOut',
+              onComplete: () => {
+                if (back) back.style.pointerEvents = 'none';
+                if (front) front.style.pointerEvents = '';
+              }
+            });
+          }
+        });
+      });
+
+      // --- 3D Tilt on Collection Cards ---
+      if (!prefersReducedMotion && !isMobile) {
+        document.querySelectorAll('.collection-3d').forEach((card) => {
+          const inner = card.querySelector('.collection-3d-inner');
+          card.addEventListener('mousemove', (e) => {
+            if (!inner) return;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -12;
+            const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 12;
+            gsap.to(inner, {
+              rotateX, rotateY, translateZ: 50,
+              duration: 0.3, ease: 'power1.out', overwrite: 'auto'
+            });
+          });
+          card.addEventListener('mouseleave', () => {
+            if (!inner) return;
+            gsap.to(inner, {
+              rotateX: 0, rotateY: 0, translateZ: 0,
+              duration: 0.6, ease: 'elastic.out(1, 0.5)', overwrite: 'auto'
+            });
+          });
+        });
+      }
+
+      // --- Magnetic Buttons (GSAP) ---
+      if (!prefersReducedMotion && !isMobile) {
+        document.querySelectorAll('.magnetic-btn').forEach((btn) => {
+          btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+          });
+          btn.addEventListener('mouseleave', () => {
+            gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+          });
+        });
+      }
+
+      // --- Membership Form ---
+      const membershipForm = document.getElementById('membership-form');
+      if (membershipForm) {
+        membershipForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('membership-email').value;
+          if (email) {
+            membershipForm.innerHTML = `
+              <div class="flex flex-col items-center gap-3 py-4 w-full">
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gold/20 border border-gold/30">
+                  <i data-lucide="heart" class="h-6 w-6 text-gold"></i>
+                </div>
+                <p class="font-heading text-lg font-semibold text-text-primary">Welcome to the Club</p>
+                <p class="font-body text-sm text-text-secondary">We'll be in touch at <span class="text-gold">${email}</span></p>
+              </div>
+            `;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+          }
+        });
+      }
+
+      // --- Smooth Scroll ---
+      const navbar = document.getElementById('navbar');
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            const navHeight = navbar ? navbar.offsetHeight : 0;
+            const targetY = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
